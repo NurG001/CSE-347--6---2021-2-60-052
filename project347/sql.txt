@@ -1,0 +1,66 @@
+CREATE TABLE users_information (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,  -- Ensuring email uniqueness
+    password VARCHAR(255) NOT NULL,
+    dob DATE NOT NULL,
+    blood_group VARCHAR(5) NOT NULL,
+    designation VARCHAR(255) NOT NULL,
+    chamber_address VARCHAR(255) NOT NULL,
+    chamber_phone VARCHAR(50) NOT NULL,
+    membership_no VARCHAR(50) NOT NULL,
+    graduation YEAR NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE Clients (
+    ClientID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,  -- Assuming there's a relationship with users_information
+    ClientName VARCHAR(255) NOT NULL,
+    Phone VARCHAR(15),
+    Address VARCHAR(255),
+    Reference VARCHAR(255),
+    CaseDescription TEXT,
+    CaseFilePath VARCHAR(255),
+    FOREIGN KEY (UserID) REFERENCES users_information(id)  -- Establishing foreign key relationship
+);
+
+
+CREATE TABLE AddClients (
+    LogID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,  -- Linking each log entry to a user
+    ClientName VARCHAR(255) NOT NULL,
+    Phone VARCHAR(15),
+    Address VARCHAR(255),
+    Reference VARCHAR(255),
+    CaseDescription TEXT,
+    CaseFilePath VARCHAR(255),
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES users_information(id)  -- Establishing foreign key relationship
+);
+
+CREATE TABLE Cases (
+    CaseNo INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    ClientName VARCHAR(255) NOT NULL,
+    CaseDescription TEXT,
+    CourtName VARCHAR(255) NOT NULL,
+    CourtNo VARCHAR(50),
+    Act VARCHAR(255),
+    HearingDates TEXT,
+    CaseFilePath VARCHAR(255),
+    Completed BOOLEAN DEFAULT 0,
+    FOREIGN KEY (UserID) REFERENCES users_information(id)
+);
+
+CREATE TABLE Feedback (
+    FeedbackID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    FeedbackText TEXT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES users_information(id)
+);
+
